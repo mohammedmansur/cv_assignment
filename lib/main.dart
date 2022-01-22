@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'profile.dart';
 
 void main(List<String> args) {
@@ -16,6 +17,10 @@ class CvPro extends StatefulWidget {
 }
 
 class _CvProState extends State<CvPro> {
+  void _launchURL() async {
+    if (!await launch(link['Github'])) throw 'Could not launch ';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +80,10 @@ class _CvProState extends State<CvPro> {
             children: [
               Column(
                 children: [
+                  // Call when you want the date time range picker to be shown
+
                   Text(
-                    toMap['name'],
+                    info['name'],
                     style: const TextStyle(
                       fontSize: 20,
                     ),
@@ -94,7 +101,7 @@ class _CvProState extends State<CvPro> {
                     height: 10,
                   ),
                   Text(
-                    toMap['location'],
+                    info['location'],
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -110,12 +117,25 @@ class _CvProState extends State<CvPro> {
             indent: 40,
           ),
           Container(
-            height: 300,
-            width: 300,
-            color: Colors.black,
-          )
+              height: 300,
+              width: 300,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: link.length,
+                  itemBuilder: (context, snapshot) {
+                    return ElevatedButton(
+                        onPressed: _launchURL,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text('GitHub'), Icon(Icons.link)],
+                        ));
+                  })),
         ],
       ),
     );
   }
+
+  String icon = 'password';
 }
