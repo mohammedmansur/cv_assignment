@@ -1,141 +1,94 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'profile.dart';
+import 'Info.dart';
 
 void main(List<String> args) {
-  runApp(MaterialApp(
-    home: CvPro(),
-  ));
+  runApp(MyApp());
 }
 
-class CvPro extends StatefulWidget {
-  const CvPro({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _CvProState createState() => _CvProState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _CvProState extends State<CvPro> {
-  void _launchURL() async {
-    if (!await launch(link['Github'])) throw 'Could not launch ';
-  }
+final TextEditingController _nameController = TextEditingController();
+final TextEditingController _dateController = TextEditingController();
+final TextEditingController _numberControler = TextEditingController();
 
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 65,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+    Map<String, dynamic> userMap = jsonDecode());
+    var user = User.fromJson(userMap);
+    return MaterialApp(
+      home: Scaffold(
+          bottomNavigationBar: Container(
+            height: 120,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Icon(Icons.add),
                 ),
-                child: Image.network(
-                  'https://scontent.fbgw4-2.fna.fbcdn.net/v/t39.30808-6/242313960_3714210802137371_4781888415979393110_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=xYZOW4ge8pUAX_MPeVf&tn=JHfLiSCxoKF0f2iF&_nc_ht=scontent.fbgw4-2.fna&oh=00_AT8-wKDrj9LW-Ib4bQKwwEtoHERnpwGRCMPIiR-VX6tJhA&oe=61EBBDB7',
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 20,
-                width: 120,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(
-                      20,
-                    ),
-                  ),
+                Container(
                   color: Colors.blue,
-                ),
-                child: Column(
-                  children: const [
-                    Text(
-                      "Looking For Job",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  // Call when you want the date time range picker to be shown
-
-                  Text(
-                    info['name'],
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.home)),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                      IconButton(
+                          onPressed: () {}, icon: Icon(Icons.library_add))
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'CV',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    info['location'],
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  )
-                ],
-              )
-            ],
+                )
+              ],
+            ),
           ),
-          const Divider(
-            color: Colors.blue,
-            thickness: 2,
-            endIndent: 40,
-            indent: 40,
-          ),
-          Container(
-              height: 300,
-              width: 300,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(top: 5, bottom: 5),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: link.length,
-                  itemBuilder: (context, snapshot) {
-                    return ElevatedButton(
-                        onPressed: _launchURL,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('GitHub'), Icon(Icons.link)],
-                        ));
-                  })),
-        ],
-      ),
+          appBar: AppBar(),
+          body: Container(
+            child: ListView.builder(
+              itemCount: toMap.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(toMap[index]),
+                );
+              },
+            ),
+          )),
     );
   }
 
-  String icon = 'password';
+  void _showMaterialDialog(context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Material Dialog'),
+            content: Text('Hey! I am  Coflutter!'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // _dismissDialog();
+                  },
+                  child: Text('Close')),
+              TextButton(
+                onPressed: () {
+                  print('HelloWorld!');
+                  // _dismissDialog();
+                },
+                child: Text('HelloWorld!'),
+              )
+            ],
+          );
+        });
+  }
 }
